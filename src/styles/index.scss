@@ -1,0 +1,140 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './sidebar.scss';
+@import './element-ui.scss';
+
+body {
+  height: 100%;
+  font-size: 14px;
+  color: #333;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Microsoft YaHei, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Arial, sans-serif;
+  // filter: grayscale(100%)
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+body::-webkit-scrollbar-track {
+  background: #fff;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transition: all .3s;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+dl, dd {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  font-weight: normal;
+}
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.flex-auto {
+  flex: 1;
+}
+.flex-fixed {
+  flex: 0 0 auto;
+}
+.flex-auto-1 {
+  flex: 1 0;
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.bg-white {
+  background-color: #fff;
+}
+.font-bold {
+  font-weight: bold;
+}
+.ov-h {
+  overflow: hidden;
+}
+// main-container global css
+.app-container {
+  padding: 20px;
+}
+.container {
+  position: relative;
+  max-width: 1200px;
+  width: 92%;
+  margin: 0 auto;
+}
+::selection {
+  color: #fff;
+  background-color: $mainColor;
+}

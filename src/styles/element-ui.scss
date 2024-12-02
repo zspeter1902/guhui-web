@@ -1,0 +1,222 @@
+.flex-wrap {
+  flex-wrap: wrap;
+}
+// checkbox
+.el-checkbox {
+  outline: none;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: $mainColor;
+  border-color: $mainColor;
+}
+.el-checkbox__inner:hover {
+  border-color: $mainColor;
+}
+.el-checkbox-button.is-checked .el-checkbox-button__inner {
+  color: #FFF;
+  background-color: $mainColor;
+  border-color: $mainColor;
+  box-shadow: -1px 0 0 0 #88cbff;
+}
+
+// cover some element-ui styles
+.el-button--primary {
+  background-color: $mainColor;
+  border-color: $mainColor;
+  transition: all .2s;
+  &:hover, &:focus {
+    background-color: $mainColorHover;
+    border-color: $mainColorHover;
+  }
+  &.is-plain {
+    color: $mainColor;
+    background: #fff;
+    border-color: $mainColorHover;
+    &:hover, &:focus {
+      color: #fff;
+      background-color: $mainColor;
+      border-color: $mainColor;
+    }
+  }
+}
+.el-button--info {
+  background-color: $infoColor;
+  border-color: $infoColor;
+  transition: all .2s;
+  &:hover, &:focus {
+    color: $mainColor;
+    background-color: $infoColorHover;
+    border-color: $infoColorHover;
+  }
+  &.is-plain {
+    color: $infoColor;
+    background: #fff;
+    border-color: $infoColorHover;
+    &:hover, &:focus {
+      color: #fff;
+      background-color: $infoColor;
+      border-color: $infoColor;
+    }
+  }
+}
+.el-button--danger {
+  background-color: $redColor;
+  border-color: $redColor;
+  transition: all .2s;
+  &:hover, &:focus {
+    background-color: $redColorHover;
+    border-color: $redColorHover;
+  }
+  &.is-plain {
+    color: $redColor;
+    background: rgba($color: $redColor, $alpha: .1);
+    border-color: $redColorHover;
+    &:hover, &:focus {
+      color: #fff;
+      background-color: $redColor;
+      border-color: $redColor;
+    }
+  }
+}
+// tag
+.el-tag {
+  background-color: rgba($color: $mainColor, $alpha: .06);
+  border-color: rgba($color: $mainColor, $alpha: .08);
+  color: $mainColor;
+}
+//
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+//
+.el-divider {
+  background-color: rgba($color: #000000, $alpha: .06);
+}
+.el-form-item__label {
+  font-weight: normal;
+}
+// to fixed https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+  max-width: 720px;
+  width: 80%;
+  &__title {
+    font-size: 16px;
+  }
+  &__header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  &__footer {
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+// refine element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+// dropdown
+.el-dropdown-menu {
+  a {
+    display: block
+  }
+}
+.el-dropdown + .el-dropdown {
+  margin-left: 20px;
+}
+.el-icon--right {
+  margin-left: 10px;
+}
+.el-icon--left {
+  margin-right: 10px;
+}
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
+}
+// el-select
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: $mainColor;
+}
+.el-select-dropdown {
+  max-width: 60%;
+}
+// el-tabs
+.el-tabs__nav-wrap::after {
+  display: none;
+}
+.el-tabs__item {
+  font-size: 16px;
+  outline: none !important;
+  user-select: none;
+  box-shadow: none !important;
+  color: #666;
+  &:hover,
+  &.is-active {
+    color: $mainColor;
+  }
+}
+.el-tabs--card>.el-tabs__header .el-tabs__nav {
+  border: none;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__item {
+  border: none;
+}
+.el-tabs__active-bar {
+  background-color: $helpColor;
+}
+.el-tabs__header {
+  margin-bottom: 20px;
+}
+
+// el-link
+.el-link {
+  &.el-link--primary {
+    color: $mainColor;
+    &:hover {
+      color: $mainColorHover;
+    }
+  }
+}
+// cascader
+.el-cascader-panel {
+  height: 300px!important;
+}
+.el-menu--popup {
+  min-width: 120px;
+  .el-submenu__icon-arrow {
+    right: 10px;
+    margin-top: -4px;
+  }
+}
+// collapse
+.el-collapse-item__header {
+  color: $blackColor;
+}
+.el-collapse-item__content {
+  color: $menuText;
+}
