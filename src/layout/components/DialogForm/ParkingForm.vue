@@ -72,9 +72,9 @@
         />
       </el-form-item>
       <!-- 停车位 --end -->
-      <el-form-item label="处理备注" prop="ordInfo">
+      <!-- <el-form-item label="处理备注" prop="ordInfo">
         <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -214,11 +214,6 @@ export default {
       })
     }
   },
-  // 组件生命周期
-  created() {
-    this.getProjectList()
-    this.getParkingList()
-  },
 
   methods: {
     getParkingList() {
@@ -235,8 +230,8 @@ export default {
     handleChangeProject(value) {
       this.$set(this.form, 'proId', value)
       this.$nextTick(() => {
-        this.$set(this.tempForm, 'parId', this.parkingListFiltered[0].id)
-        this.$set(this.form, 'parId', this.parkingListFiltered[0].id)
+        this.$set(this.tempForm, 'parId', this.parkingListFiltered[0]?.id)
+        this.$set(this.form, 'parId', this.parkingListFiltered[0]?.id)
       })
     },
     handleChangeForm(value, field) {
@@ -256,11 +251,13 @@ export default {
     },
 
     open(type, ordId) {
+      this.getProjectList()
+      this.getParkingList()
       this.reset()
       this.visible = true
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-停车位'
+      this.title = '申请停车位'
     },
     // 取消按钮
     cancel() {
@@ -277,11 +274,10 @@ export default {
         // imgUrl: null,
         userName: null,
         userPhone: null,
-        userEmail: null,
-        ordInfo: null
+        userEmail: null
       }
       this.tempForm = {}
-      this.$refs['form'].resetFields()
+      // this.$refs['form'].resetFields()
     },
 
     /** 提交按钮 */
@@ -296,8 +292,7 @@ export default {
             // imgUrl: null,
             userName: null,
             userPhone: null,
-            userEmail: null,
-            ordInfo: null
+            userEmail: null
           }
           for (const key in form) {
             form[key] = this.form[key]
@@ -305,15 +300,15 @@ export default {
           form.ordAbout = JSON.stringify(this.tempForm)
           if (this.form.id != null) {
             updateWork_order_auto(form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           } else {
             addWork_order_auto(form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           }
         }

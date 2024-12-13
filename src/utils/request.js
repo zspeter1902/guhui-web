@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import Router from '@/router/index'
+import Router from '@/router/index'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
@@ -99,20 +99,20 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if ([15103, 15201].includes(res.code)) {
+      if ([15103, 15201, 401].includes(res.code)) {
         // to re-login
-        MessageBox.confirm('登录状态已经失效，请重新登录！', '确定登出', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-            // Router.push('/login')
-          })
-        }).catch(action => {
-          store.dispatch('user/resetToken')
+        // MessageBox.confirm('登录状态已经失效，请重新登录！', '确定登出', {
+        //   confirmButtonText: '重新登录',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+          // Router.push('/')
         })
+        // }).catch(action => {
+        //   store.dispatch('user/resetToken')
+        // })
       } else if (![11001].includes(res.code)) {
         Message({
           message: res.msg || 'Error',
@@ -130,16 +130,16 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     if (error.response && error.response.status === 401) {
-      MessageBox.confirm('登录状态已经失效，请重新登录！', '确定登出', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('user/resetToken').then(() => {
-          location.reload()
-          // Router.push('/login')
-        })
+      // MessageBox.confirm('登录状态已经失效，请重新登录！', '确定登出', {
+      //   confirmButtonText: '重新登录',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      store.dispatch('user/resetToken').then(() => {
+        location.reload()
+        // Router.push('/login')
       })
+      // })
       return
     }
     if (error.message) {

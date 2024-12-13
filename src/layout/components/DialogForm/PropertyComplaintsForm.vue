@@ -13,7 +13,7 @@
 
       <el-form-item label="图片" prop="imgUrl">
         <!-- <el-input v-model="form.imgUrl" type="textarea" placeholder="请输入内容" /> -->
-        <image-upload :value="form.imgUrl" path="property-complaints" @input="uploadImage" />
+        <image-upload :value="form.imgUrl" :file-size="1" path="property-complaints" @input="uploadImage" />
       </el-form-item>
       <!-- 广告位 --start -->
       <!-- <el-form-item label="工单内容" prop="ordAbout">
@@ -50,9 +50,9 @@
         </el-select>
       </el-form-item>
       <!-- 广告位 --end -->
-      <el-form-item label="处理备注" prop="ordInfo">
+      <!-- <el-form-item label="处理备注" prop="ordInfo">
         <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -62,11 +62,13 @@
 </template>
 
 <script>
+import ImageUpload from '@/components/ImageUpload'
 import { getWork_order, addWork_order_auto, updateWork_order_auto, listProject, listBuild } from '@/api/work'
 import { listUser, listFloor } from '@/api/user'
 import { isValidEmail, isValidPhone } from '@/utils/validate'
 export default {
-  data() {
+    components: { ImageUpload },
+    data() {
     const validateEmail = (rule, value, callback) => {
       if (value) {
         if (!isValidEmail(value)) {
@@ -152,12 +154,6 @@ export default {
       })
     }
   },
-  // 组件生命周期
-  created() {
-    this.getProjectList()
-    this.getBuildList()
-    this.getFloorList()
-  },
 
   methods: {
     getFloorList() {
@@ -217,11 +213,14 @@ export default {
       })
     },
     open(type, ordId) {
+      this.getProjectList()
+      this.getBuildList()
+      this.getFloorList()
       this.reset()
       this.visible = true
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-物业投诉'
+      this.title = '物业投诉'
     },
     // 取消按钮
     cancel() {
@@ -238,10 +237,9 @@ export default {
         // imgUrl: null,
         userName: null,
         userPhone: null,
-        userEmail: null,
-        ordInfo: null
+        userEmail: null
       }
-      this.$refs['form'].resetFields()
+      // this.$refs['form'].resetFields()
     },
     uploadImage(imgStr) {
       console.log(imgStr)
@@ -254,15 +252,15 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           } else {
             addWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           }
         }

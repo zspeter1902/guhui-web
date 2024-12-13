@@ -13,7 +13,7 @@
 
       <el-form-item label="图片" prop="imgUrl">
         <!-- <el-input v-model="form.imgUrl" type="textarea" placeholder="请输入内容" /> -->
-        <image-upload :value="form.imgUrl" path="property-repair" @input="uploadImage" />
+        <image-upload :value="form.imgUrl" :file-size="1" path="property-repair" @input="uploadImage" />
       </el-form-item>
       <!-- 广告位 --start -->
       <!-- <el-form-item label="工单内容" prop="ordAbout">
@@ -50,8 +50,8 @@
         </el-select>
       </el-form-item>
       <!-- 广告位 --end -->
-      <el-form-item label="处理备注" prop="ordInfo">
-        <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
+      <el-form-item label="报修信息">
+        <el-input v-model="tempForm.ordAbout" type="textarea" placeholder="请输入报修信息" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -65,7 +65,9 @@
 import { getWork_order, addWork_order_auto, updateWork_order_auto, listProject, listBuild } from '@/api/work'
 import { listUser, listFloor } from '@/api/user'
 import { isValidEmail, isValidPhone } from '@/utils/validate'
+import ImageUpload from '@/components/ImageUpload'
 export default {
+  components: { ImageUpload },
   data() {
     const validateEmail = (rule, value, callback) => {
       if (value) {
@@ -152,12 +154,6 @@ export default {
       })
     }
   },
-  // 组件生命周期
-  created() {
-    this.getProjectList()
-    this.getBuildList()
-    this.getFloorList()
-  },
 
   methods: {
     getFloorList() {
@@ -172,22 +168,28 @@ export default {
       })
     },
     handleChangeProject(value) {
+      // this.form.proId = value
       this.$set(this.form, 'proId', value)
-      this.$set(this.form, 'buiId', this.buildListFiltered[0].buiId)
-      this.$set(this.tempForm, 'buiId', this.buildListFiltered[0].buiId)
-      this.$nextTick(() => {
-        // console.log('project值', value)
-        this.$set(this.tempForm, 'floId', this.floorListFiltered[0]?.floId)
-        this.$set(this.form, 'floId', this.floorListFiltered[0]?.floId)
-      })
+      const firstBuilding = this.buildListFiltered[0]
+      if (firstBuilding) {
+        this.form.buiId = firstBuilding.buiId //
+        this.tempForm.buiId = firstBuilding.buiId // 同步到临时表单
+      }
+      const firstFlo = this.floorListFiltered[0]
+      if (firstFlo) {
+        this.form.floId = firstFlo.floId //
+        this.tempForm.floId = firstFlo.floId // 同步到临时表单
+      }
+      // 重新触发表单验证
+      // this.$refs['form'].validate()
     },
     handleChangeBuilding(value) {
-      this.$nextTick(() => {
-        // console.log('project值', value)
-        // this.buiId = this.buildListFiltered[0]?.buiId
-        this.$set(this.tempForm, 'floId', this.floorListFiltered[0].floId)
-        this.$set(this.form, 'floId', this.floorListFiltered[0].floId)
-      })
+      this.form.buiId = value
+      const firstFlo = this.floorListFiltered[0]
+      if (firstFlo) {
+        this.form.floId = firstFlo.floId //
+        this.tempForm.floId = firstFlo.floId // 同步到临时表单
+      }
     },
     handleChangeForm(value, field) {
       this.$set(this.form, field, value)
@@ -217,11 +219,14 @@ export default {
       })
     },
     open(type, ordId) {
+      this.getProjectList()
+      this.getBuildList()
+      this.getFloorList()
       this.reset()
       this.visible = true
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-物业报修'
+      this.title = '物业报修'
     },
     // 取消按钮
     cancel() {
@@ -235,13 +240,12 @@ export default {
         ordType: null,
         ordAbout: null,
         ordSource: 'on_line',
-        // imgUrl: null,
+        imgUrl: null,
         userName: null,
         userPhone: null,
-        userEmail: null,
-        ordInfo: null
+        userEmail: null
       }
-      this.$refs['form'].resetFields()
+      // this.$refs['form'].resetFields()
     },
     uploadImage(imgStr) {
       console.log(imgStr)
@@ -254,15 +258,15 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           } else {
             addWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           }
         }

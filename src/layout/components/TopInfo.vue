@@ -32,7 +32,7 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown> -->
-        <el-dropdown class="hidden-xs-only" @command="handleCommand">
+        <el-dropdown v-if="isLogin" class="hidden-xs-only" @command="handleCommand">
           <span class="el-dropdown-link">
             预订<i class="el-icon-arrow-down el-icon--right" />
           </span>
@@ -46,7 +46,7 @@
           </el-dropdown-menu>
         </el-dropdown>
 
-        <el-dropdown class="hidden-xs-only" @command="handleCommand">
+        <el-dropdown v-if="isLogin" class="hidden-xs-only" @command="handleCommand">
           <span class="el-dropdown-link">
             申请<i class="el-icon-arrow-down el-icon--right" />
           </span>
@@ -60,7 +60,7 @@
           </el-dropdown-menu>
         </el-dropdown>
 
-        <el-dropdown class="hidden-xs-only" @command="handleCommand">
+        <el-dropdown v-if="isLogin" class="hidden-xs-only" @command="handleCommand">
           <span class="el-dropdown-link">
             物业<i class="el-icon-arrow-down el-icon--right" />
           </span>
@@ -80,17 +80,17 @@
     <change-password ref="changePassword" />
     <!-- 添加或修改工单对话框 -->
     <!-- 会议室租赁 -->
-    <meeting-form ref="meetingForm" @refresh="getList" />
+    <meeting-form v-show="visibleType === '会议室'" ref="meetingForm" />
     <!-- 广告位租赁 -->
-    <adv-form ref="advForm" @refresh="getList" />
+    <adv-form v-show="visibleType === '广告位'" ref="advForm" />
     <!-- 车位租赁 -->
-    <parking-form ref="parkingForm" @refresh="getList" />
+    <parking-form v-show="visibleType === '车位'" ref="parkingForm" />
     <!-- 入驻申请 -->
-    <join-form ref="joinForm" @refresh="getList" />
+    <join-form v-show="visibleType === '入驻'" ref="joinForm" />
     <!-- 物业报修 -->
-    <repair-form ref="repairForm" @refresh="getList" />
+    <repair-form v-show="visibleType === '物业报修'" ref="repairForm" />
     <!-- 物业投诉 -->
-    <complaints-form ref="complaintsForm" @refresh="getList" />
+    <complaints-form v-show="visibleType === '物业投诉'" ref="complaintsForm" />
   </div>
 </template>
 
@@ -110,6 +110,11 @@ export default {
     ParkingForm: () => import('./DialogForm/ParkingForm.vue'),
     ComplaintsForm: () => import('./DialogForm/PropertyComplaintsForm.vue'),
     RepairForm: () => import('./DialogForm/PropertyRepairForm.vue')
+  },
+  data() {
+    return {
+      visibleType: ''
+    }
   },
   computed: {
     device({ $store }) {
@@ -154,12 +159,15 @@ export default {
         '物业报修': { name: 'repairForm', type: 'property_repair' },
         '物业投诉': { name: 'complaintsForm', type: 'property_complaints' }
       }
+      this.visibleType = command
       for (const key in typeMap) {
         if (command.includes(key)) {
           const refName = typeMap[key].name
           const type = typeMap[key].type
           // console.log(refName)
-          this.$refs[refName]?.open(type)
+          this.$nextTick(() => {
+            this.$refs[refName]?.open(type)
+          })
           // this.$set(this.form, 'ordType', item.value)
         }
       }

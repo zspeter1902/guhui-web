@@ -79,9 +79,9 @@
         />
       </el-form-item>
       <!-- 广告位 --end -->
-      <el-form-item label="处理备注" prop="ordInfo">
+      <!-- <el-form-item label="处理备注" prop="ordInfo">
         <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -217,13 +217,6 @@ export default {
       })
     }
   },
-  // 组件生命周期
-  created() {
-    this.getProjectList()
-    this.getBuildList()
-    this.getAdvList()
-  },
-
   methods: {
     getAdvList() {
       listAdv().then(response => {
@@ -237,23 +230,27 @@ export default {
       })
     },
     handleChangeProject(value) {
-      this.$set(this.form, 'proId', value)
-      this.$set(this.tempForm, 'buiId', this.buildListFiltered[0].buiId)
-      this.$set(this.form, 'buiId', this.buildListFiltered[0].buiId)
-      this.$nextTick(() => {
-        // console.log('project值', value)
-        // this.buiId = this.buildListFiltered[0]?.buiId
-        this.$set(this.tempForm, 'advId', this.advListFiltered[0].id)
-        this.$set(this.form, 'advId', this.advListFiltered[0].id)
-      })
+      this.form.proId = value
+      const firstBuilding = this.buildListFiltered[0]
+      if (firstBuilding) {
+        this.form.buiId = firstBuilding.buiId // 设置建筑ID
+        this.tempForm.buiId = firstBuilding.buiId // 同步到临时表单
+      }
+      const firstAdv = this.advListFiltered[0]
+      if (firstAdv) {
+        this.form.advId = firstAdv.id // 设置广告位ID
+        this.tempForm.advId = firstAdv.id // 同步到临时表单
+      }
+      // 重新触发表单验证
+      // this.$refs['form'].validate()
     },
     handleChangeBuilding(value) {
-      this.$nextTick(() => {
-        // console.log('project值', value)
-        // this.buiId = this.buildListFiltered[0]?.buiId
-        this.$set(this.tempForm, 'advId', this.advListFiltered[0].id)
-        this.$set(this.form, 'advId', this.advListFiltered[0].id)
-      })
+      this.form.buiId = value
+      const firstAdv = this.advListFiltered[0]
+      if (firstAdv) {
+        this.form.advId = firstAdv.id // 设置广告位ID
+        this.tempForm.advId = firstAdv.id // 同步到临时表单
+      }
     },
     handleChangeForm(value, field) {
       this.$set(this.form, field, value)
@@ -283,11 +280,15 @@ export default {
       })
     },
     open(type, ordId) {
+      console.log('open')
+      this.getProjectList()
+      this.getBuildList()
+      this.getAdvList()
       this.visible = true
       this.reset()
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-广告位'
+      this.title = '预订广告位'
     },
     // 取消按钮
     cancel() {
@@ -305,7 +306,14 @@ export default {
         userName: null,
         userPhone: null,
         userEmail: null,
-        ordInfo: null
+        proId: null, // 确保相关字段包含在内
+        buiId: null,
+        advId: null,
+        price: null,
+        startTime: null,
+        endTime: null,
+        comName: null,
+        comCode: null
       }
       this.tempForm = {}
       this.$nextTick(() => {
@@ -320,15 +328,13 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
             })
           } else {
             addWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
             })
           }
         }

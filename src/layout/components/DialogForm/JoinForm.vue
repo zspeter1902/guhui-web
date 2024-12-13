@@ -52,9 +52,9 @@
         </el-input>
       </el-form-item>
       <!-- 停车位 --end -->
-      <el-form-item label="处理备注" prop="ordInfo">
+      <!-- <el-form-item label="处理备注" prop="ordInfo">
         <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -133,11 +133,11 @@ export default {
           { required: true, message: '请输入企业名称', trigger: 'blur' }
         ],
         busNead: [
-          { required: true, message: '请输入商机需求', trigger: 'blur' }
+          { required: true, message: '请输入企业需求', trigger: 'blur' }
         ],
         busScale: [
-          { required: true, message: '请输入商机规模', trigger: 'blur' },
-          { type: 'number', message: '商机规模是数字类型！' }
+          { required: true, message: '请输入企业规模', trigger: 'blur' },
+          { type: 'number', message: '企业规模是数字类型！' }
         ]
 
       },
@@ -151,10 +151,6 @@ export default {
     }
   },
   computed: {
-  },
-  // 组件生命周期
-  created() {
-    this.getProjectList()
   },
 
   methods: {
@@ -182,11 +178,12 @@ export default {
     },
 
     open(type, ordId) {
-      this.reset()
+      this.getProjectList()
       this.visible = true
+      this.reset()
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-入驻申请'
+      this.title = '入驻申请'
     },
     // 取消按钮
     cancel() {
@@ -203,11 +200,10 @@ export default {
         // imgUrl: null,
         userName: null,
         userPhone: null,
-        userEmail: null,
-        ordInfo: null
+        userEmail: null
       }
       this.tempForm = {}
-      this.$refs['form'].resetFields()
+      // this.$refs['form'].resetFields()
     },
 
     /** 提交按钮 */
@@ -222,8 +218,7 @@ export default {
             // imgUrl: null,
             userName: null,
             userPhone: null,
-            userEmail: null,
-            ordInfo: null
+            userEmail: null
           }
           for (const key in form) {
             form[key] = this.form[key]
@@ -231,15 +226,15 @@ export default {
           form.ordAbout = JSON.stringify(this.tempForm)
           if (this.form.id != null) {
             updateWork_order_auto(form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           } else {
             addWork_order_auto(form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           }
         }

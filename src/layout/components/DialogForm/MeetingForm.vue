@@ -32,47 +32,47 @@
       <el-form-item label="音响" prop="audio">
         <el-select v-model="tempForm.audio" placeholder="请选择是否需要音响">
           <el-option
-            v-for="dict in dict.type.common_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+            v-for="dict in commonStatus"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="大屏" prop="ledScreen">
         <el-select v-model="tempForm.ledScreen" placeholder="请选择是否需要大屏">
           <el-option
-            v-for="dict in dict.type.common_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+            v-for="dict in commonStatus"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="投影仪" prop="projector">
         <el-select v-model="tempForm.projector" placeholder="请选择是否需要投影仪">
           <el-option
-            v-for="dict in dict.type.common_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+            v-for="dict in commonStatus"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="讲台" prop="podium">
         <el-select v-model="tempForm.podium" placeholder="请选择是否需要讲台">
           <el-option
-            v-for="dict in dict.type.common_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+            v-for="dict in commonStatus"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
           />
         </el-select>
       </el-form-item>
       <!-- 工单内容 ordAbout end -->
-      <el-form-item label="处理备注" prop="ordInfo">
+      <!-- <el-form-item label="处理备注" prop="ordInfo">
         <el-input v-model="form.ordInfo" placeholder="请输入处理备注" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -156,21 +156,21 @@ export default {
       commonStatus: []
     }
   },
-  // 组件生命周期
-  created() {
-    getDictDetail('common_status').then(res => {
-      console.log('字典查看', res)
-      this.commonStatus = res
-    })
-  },
 
   methods: {
     open(type, ordId) {
-      this.reset()
+      this.getDict()
       this.visible = true
+      this.reset()
       this.form.ordType = type
       this.form.id = ordId
-      this.title = '添加工单-会议室'
+      this.title = '预订会议室'
+    },
+    getDict() {
+      getDictDetail('common_status').then(res => {
+        // console.log('字典查看', res)
+        this.commonStatus = res.data
+      })
     },
     // 取消按钮
     cancel() {
@@ -187,11 +187,10 @@ export default {
         // imgUrl: null,
         userName: null,
         userPhone: null,
-        userEmail: null,
-        ordInfo: null
+        userEmail: null
       }
       this.tempForm = {}
-      this.$refs['form'].resetFields()
+      // this.$refs['form'].resetFields()
     },
 
     /** 提交按钮 */
@@ -202,15 +201,15 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
+              this.$message.success('修改成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           } else {
             addWork_order_auto(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
+              this.$message.success('提交成功')
               this.visible = false
-              this.$emit('refresh')
+              // this.$emit('refresh')
             })
           }
         }

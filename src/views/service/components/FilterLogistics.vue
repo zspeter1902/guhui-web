@@ -40,12 +40,12 @@ export default {
   // 方法集合
   methods: {
     getAreaList() {
-      getDictList('logistics_start').then(res => {
-        this.startArea = res.list[0].children
-      })
-      getDictList('logistics_end').then(res => {
-        this.endArea = res.list[0].children
-      })
+      // getDictList('logistics_start').then(res => {
+      //   this.startArea = res.list[0].children
+      // })
+      // getDictList('logistics_end').then(res => {
+      //   this.endArea = res.list[0].children
+      // })
     },
     onChangeStart(val) {
       this.$emit('start', val)

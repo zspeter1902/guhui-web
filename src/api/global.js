@@ -74,7 +74,7 @@ export function getDictListFilter(data) {
 // 字典详情查询
 export function getDictDetail(dictcode) {
   return request({
-    url: `/system/dict/data/${dictcode}`,
+    url: `/system/dict/data/type/${dictcode}`,
     method: 'get'
   })
 }

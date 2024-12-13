@@ -205,8 +205,8 @@ export default {
     if (!this.isLogin && !sessionStorage.getItem('randomUser')) {
       sessionStorage.setItem('randomUser', this.userId)
     }
-    this.initWebSocket()
-    this.watchChat()
+    // this.initWebSocket()
+    // this.watchChat()
     window.addEventListener('scroll', this.scrollToTop)
   },
   beforeDestroy() {

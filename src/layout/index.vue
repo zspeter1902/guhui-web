@@ -8,7 +8,7 @@
           <logo />
           <hamburger :is-active="sidebar.opened" class="hamburger-container " @toggleClick="toggleSideBar" />
         </el-row>
-        <sidebar class="sidebar-container" />
+        <!-- <sidebar class="sidebar-container" /> -->
       </div>
       <app-main />
     </div>
